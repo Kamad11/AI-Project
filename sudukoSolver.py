@@ -24,7 +24,6 @@ def solve(board):
     Returns:
         bool: True if solved completely, otherwise False.
     """
-
     # finding empty cell
     find = find_empty(board)
     if not find:
@@ -56,7 +55,6 @@ def valid(board, num, pos):
     Returns:
         bool: True if position is valid, otherwise False.
     """
-
     # Check every cell in row except current
     for i in range(len(board[0])):
         if board[pos[0]][i] == num and pos[1] != i:
@@ -85,7 +83,6 @@ def print_board(board):
     Args:
         board (list): the game board.
     """
-
     for i in range(len(board)):
         if i % 3 == 0 and i != 0:
             print("- - - - - - - - - - - - - ")
@@ -109,7 +106,6 @@ def find_empty(board):
     Returns:
         (i, j) (tuple): empty position (row, column) if found, otherwise None.
     """
-
     for i in range(len(board)):
         for j in range(len(board[0])):
             if board[i][j] == 0:

@@ -54,8 +54,12 @@ def biggestContour(contours):
     return biggest, max_area
 
 
-# 3 - Reorder points for Warp Perspective
 def reorder(myPoints):
+    """Reordering the points.
+
+    Args:
+        myPoints (np.array): array of image.
+    """
     myPoints = myPoints.reshape((4, 2))
     myPointsNew = np.zeros((4, 1, 2), dtype=np.int32)
     add = myPoints.sum(1)
@@ -67,8 +71,15 @@ def reorder(myPoints):
     return myPointsNew
 
 
-# 4 - TO SPLIT THE IMAGE INTO 81 DIFFRENT IMAGES
 def splitBoxes(img):
+    """Splitting the image into 81 small images.
+
+    Args:
+        img: original image to be divided.
+
+    Returns:
+        boxes: list of 81 images.
+    """
     rows = np.vsplit(img, 9)
     boxes = []
     for r in rows:
@@ -78,22 +89,32 @@ def splitBoxes(img):
     return boxes
 
 
-# 4 - GET PREDECTIONS ON ALL IMAGES
 def getPredection(boxes, model):
+    """Splitting the image into 81 small images.
+
+    Args:
+        boxes (list): all 81 images.
+        model (.h5 model): the CNN model.
+
+    Returns:
+        result (list): list of the recognized digits.
+    """
     result = []
     for image in boxes:
-        # PREPARE IMAGE
+        # prepare image for model
         img = np.asarray(image)
         img = img[4:img.shape[0] - 4, 4:img.shape[1] - 4]
         img = cv2.resize(img, (28, 28))
         img = img / 255
         img = img.reshape(1, 28, 28, 1)
-        # GET PREDICTION
+
+        # get predictions
         predictions = model.predict(img)
         classIndex = model.predict_classes(img)
         probabilityValue = np.amax(predictions)
-        # SAVE TO RESULT
-        if probabilityValue > 0.8:
+
+        # save predictions to result
+        if probabilityValue > 0.9:
             result.append(classIndex[0])
         else:
             result.append(0)
@@ -102,6 +123,15 @@ def getPredection(boxes, model):
 
 # 6 -  TO DISPLAY THE SOLUTION ON THE IMAGE
 def displayNumbers(img, numbers, color=(0, 255, 0)):
+    """Splitting the image into 81 small images.
+
+    Args:
+        boxes (list): all 81 images.
+        model (.h5 model): the CNN model.
+
+    Returns:
+        result (list): list of the recognized digits.
+    """
     secW = int(img.shape[1]/9)
     secH = int(img.shape[0]/9)
     for x in range(0, 9):

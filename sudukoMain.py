@@ -7,7 +7,7 @@ import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 # choosing image to be solved
-num = int(input("Enter image (1-3): "))
+num = int(input("Enter image (1-6): "))
 pathImage = f"Resources/{num}.jpg"
 heightImg = 450
 widthImg = 450
@@ -69,8 +69,11 @@ if biggest.size != 0:
 
     # try to find solution if one exists
     try:
+        print('Solving...please wait...')
         sudukoSolver.solve(board)
+        print('Solution found!')
     except:
+        print('No solution')
         pass
 
     flatList = []
@@ -99,6 +102,8 @@ if biggest.size != 0:
                   [imgDetectedDigits, imgSolvedDigits, imgInvWarpColored, inv_perspective])
     stackedImage = stackImages(imageArray, 1)
     cv2.imshow('Stacked Images', stackedImage)
+
+    print('Done')
 
 else:
     print("No Sudoku Found")
