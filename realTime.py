@@ -143,8 +143,8 @@ class Thread(QThread):
                             "uint8"
                         )
                         dst = cv2.add(img1_bg, img2_fg)
-                        self.show_frame(dst)
-                        cv2.imwrite("result.png", dst)
+                        cv2.imwrite("result.jpg", dst)
+                        break
 
                     else:
                         self.show_frame(frame)
@@ -152,6 +152,9 @@ class Thread(QThread):
                 else:
                     flag = 0
                     self.show_frame(frame)
+
+        cap.release()
+        Ui_RealTime.final_result()
 
     def show_frame(self, frame):
         rgbImage = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -187,7 +190,11 @@ class Ui_RealTime(QtWidgets.QWidget):
         self.feed.setObjectName("feed")
         self.gridLayout.addWidget(self.feed, 0, 0, 1, 1)
 
-        th = Thread(self)
-        th.changePixmap.connect(self.setImage)
-        th.start()
+        self.th = Thread(self)
+        self.th.changePixmap.connect(self.setImage)
+        self.th.start()
         self.show()
+    
+    def final_result(self):
+        self.th.quit()
+        self.feed.setPixmap(QPixmap.fromImage("result.jpg"))
