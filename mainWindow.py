@@ -2,6 +2,7 @@ import os
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
 from utils import intialize_predection_model
+from instructions import Ui_Instructions
 from upload import Ui_UploadImage
 from realTime import Ui_RealTime
 from randomGenerator import Ui_RandomGenerator
@@ -48,8 +49,12 @@ class Ui_MainWindow(object):
         self.label.setObjectName("label")
         self.game_layout.addWidget(self.label, 0, 0, 1, 1)
         self.main_layout.addWidget(self.game, 0, 0, 1, 1)
+
+        # option buttons
         self.options = QtWidgets.QWidget(self.centralwidget)
         self.options.setMinimumSize(QtCore.QSize(700, 90))
+        font = QtGui.QFont()
+        font.setPointSize(13)
         self.options.setStyleSheet(style_sheet)
         self.options.setObjectName("options")
         self.options_layout = QtWidgets.QGridLayout(self.options)
@@ -57,28 +62,21 @@ class Ui_MainWindow(object):
 
         self.real_time_button = QtWidgets.QPushButton(self.options)
         self.real_time_button.setMinimumSize(QtCore.QSize(0, 80))
-        font = QtGui.QFont()
-        font.setPointSize(13)
         self.real_time_button.setFont(font)
         self.real_time_button.setObjectName("real_time_button")
         self.options_layout.addWidget(self.real_time_button, 0, 0, 1, 1)
 
         self.upload_button = QtWidgets.QPushButton(self.options)
         self.upload_button.setMinimumSize(QtCore.QSize(0, 80))
-        font = QtGui.QFont()
-        font.setPointSize(13)
         self.upload_button.setFont(font)
-        self.upload_button.setStyleSheet("")
         self.upload_button.setObjectName("upload_button")
         self.options_layout.addWidget(self.upload_button, 0, 1, 1, 1)
 
         self.random_generator_button = QtWidgets.QPushButton(self.options)
         self.random_generator_button.setMinimumSize(QtCore.QSize(0, 80))
-        font = QtGui.QFont()
-        font.setPointSize(13)
         self.random_generator_button.setFont(font)
-        self.random_generator_button.setStyleSheet("")
         self.random_generator_button.setObjectName("random_generator_button")
+
         self.options_layout.addWidget(self.random_generator_button, 0, 2, 1, 1)
         self.main_layout.addWidget(self.options, 1, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -89,13 +87,15 @@ class Ui_MainWindow(object):
         self.menubar.setMinimumSize(QtCore.QSize(0, 30))
         self.menubar.setStyleSheet("color: #000000;")
         self.menubar.setObjectName("menubar")
-        self.instructions = QtWidgets.QMenu(self.menubar)
-        self.instructions.setObjectName("instructions")
-        self.about = QtWidgets.QMenu(self.menubar)
-        self.about.setObjectName("about")
         MainWindow.setMenuBar(self.menubar)
-        self.menubar.addAction(self.instructions.menuAction())
-        self.menubar.addAction(self.about.menuAction())
+        # instructions
+        self.instructions = QtWidgets.QAction(self.menubar)
+        self.instructions.setObjectName("instructions")
+        # about
+        self.about = QtWidgets.QAction(self.menubar)
+        self.about.setObjectName("about")
+        self.menubar.addAction(self.instructions)
+        self.menubar.addAction(self.about)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -118,8 +118,34 @@ class Ui_MainWindow(object):
         self.random_generator_button.clicked.connect(lambda: self.start_game('randomGenerator'))
 
         # menubar
-        self.instructions.setTitle(_translate("MainWindow", "Instructions"))
-        self.about.setTitle(_translate("MainWindow", "About"))
+        self.instructions.setText(_translate("MainWindow", "Instructions"))
+        self.instructions.triggered.connect(lambda: self.click_menubar('instructions'))
+
+        self.about.setText(_translate("MainWindow", "About"))
+        self.about.triggered.connect(lambda: self.click_menubar('about'))
+    
+    def click_menubar(self, item):
+        """Menubar click."""
+
+        self.replace = QtWidgets.QWidget()
+        self.replace.setMinimumSize(QtCore.QSize(700, 700))
+        # adding to games frame
+        self.game_layout.addWidget(self.replace, 0, 0, 1, 1)
+
+        menu = False
+
+        if item == 'instructions':
+            instr = QtWidgets.QWidget()
+            ui = Ui_Instructions()
+            ui.setupUi(instr)
+
+            menu = instr
+
+        elif item == 'about':
+            pass
+
+        if menu:
+            self.game_layout.replaceWidget(self.replace, menu)
 
     def start_game(self, game):
         """Start game."""
