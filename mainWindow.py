@@ -82,13 +82,14 @@ class Ui_MainWindow(object):
         self.options_layout.addWidget(self.random_generator_button, 0, 2, 1, 1)
         self.main_layout.addWidget(self.options, 1, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
+        
+        # menubar
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 850, 30))
         self.menubar.setMinimumSize(QtCore.QSize(0, 30))
         self.menubar.setStyleSheet("color: #000000;")
         self.menubar.setObjectName("menubar")
         self.instructions = QtWidgets.QMenu(self.menubar)
-        self.instructions.setStyleSheet("")
         self.instructions.setObjectName("instructions")
         self.about = QtWidgets.QMenu(self.menubar)
         self.about.setObjectName("about")
