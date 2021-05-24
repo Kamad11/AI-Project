@@ -54,7 +54,7 @@ class Ui_Instructions(object):
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 677, 746))
         self.scrollAreaWidgetContents.setStyleSheet("""background-color: rgb(255, 255, 255);
-                                                       font: 12pt \"OCR A Extended\";""")
+                                                       font: 12pt \"Consolas\";""")
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.text_layout = QtWidgets.QGridLayout(self.scrollAreaWidgetContents)
         self.text_layout.setContentsMargins(10, 10, 10, 10)
